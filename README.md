@@ -1,3 +1,9 @@
+> I will repeate the model from paper
+
+# PaperWithCode Completed
+
+- [Attention-based recurrent neural network models for joint intent detection and slot filling](./attention-based-rnn)
+
 # Research Advances In Semantic Slot Filling 
 
 This repo mainly summary latest research advances on semantic slot filling.
