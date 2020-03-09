@@ -1,0 +1,84 @@
+{
+    "dataset_reader": {
+        "type": "atis_reader",
+        "token_indexers": {
+            "tokens": {
+                "type": "single_id",
+                "lowercase_tokens": true
+            },
+            // "token_characters": {
+            //     "type": "characters"
+            // }
+        }
+    },
+    "train_data_path": "./dataset/atis/atis.train.pkl",
+    "test_data_path": "./dataset/atis/atis.test.pkl",
+    "model": {
+        "type": "intent_detection",
+        "text_field_embedder": {
+            "token_embedders": {
+                "tokens": {
+					"type": "embedding",
+					"embedding_dim": 100
+				}
+                // "token_characters": {
+				// 	"type": "character_encoding",
+				// 	"embedding": {
+				// 		"embedding_dim": 60
+				// 	},
+				// 	"encoder": {
+				// 		"type": "cnn",
+				// 		"embedding_dim": 60,
+				// 		"num_filters": 64,
+				// 		"ngram_filter_sizes": [3]
+				// 	},
+				// 	"dropout": 0.1
+				// }
+            }
+        },
+        "encoder": {
+            "type": "lstm",
+            "bidirectional": true,
+            "input_size": 100,
+            "hidden_size": 100,
+            "num_layers": 1,
+            "dropout": 0.2
+        },
+        "feed_forward": {
+            "input_dim": 200,
+            "num_layers": 2,
+            "hidden_dims": [
+                75,
+                26
+            ],
+            "activations": [
+                "relu",
+                "linear"
+            ],
+            "dropout": [
+                0.2,
+                0.0
+            ]
+        }
+    },
+    "iterator": {
+        "type": "bucket",
+        "sorting_keys": [
+            [
+                "sentence",
+                "num_tokens"
+            ]
+        ],
+        "batch_size": 64
+    },
+    "trainer": {
+        "num_epochs": 60,
+        "patience": 10,
+        "cuda_device": -1,
+        "grad_clipping": 5.0,
+        "validation_metric": "+accuracy",
+        "optimizer": {
+            "type": "adagrad"
+        }
+    }
+}

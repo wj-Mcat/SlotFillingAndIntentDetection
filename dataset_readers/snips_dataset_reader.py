@@ -18,7 +18,7 @@ from allennlp.data import Instance, Token
 from allennlp.data.fields import TextField, LabelField, SequenceLabelField
 
 
-@DatasetReader
+@DatasetReader.register("snips")
 class SnipsDatasetReader(DatasetReader):
 
     def __init__(self, token_indexers: Dict[str, TokenIndexer] = None):

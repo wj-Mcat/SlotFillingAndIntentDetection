@@ -6,7 +6,7 @@
 @时间    :2020/03/07 17:14:48
 @作者    :吴京京
 '''
-from typing import Iterable, List
+from typing import Iterable, List, Dict
 import pickle
 from overrides import overrides
 from allennlp.data.dataset_readers import DatasetReader
@@ -16,9 +16,9 @@ from allennlp.data import Instance, Token
 from allennlp.data.fields import TextField, LabelField, SequenceLabelField
 
 
-@DatasetReader.register("atis")
+@DatasetReader.register("atis_reader")
 class ATISDdatasetReader(DatasetReader):
-	def __init__(self, token_indexers: TokenIndexer = None, lazy: bool = False):
+	def __init__(self, token_indexers: Dict[str, TokenIndexer] = None, lazy: bool = False):
 		super(ATISDdatasetReader, self).__init__(lazy=lazy)
 		self.tokenizer = WordTokenizer()
 		self.token_indexers = token_indexers if token_indexers else {"tokens": SingleIdTokenIndexer()}
@@ -45,7 +45,7 @@ class ATISDdatasetReader(DatasetReader):
 	def text_to_instance(self, tokens: List[Token], entities: List[str] = None,intent:str=None) -> Instance:
 		text_field = TextField(tokens, self.token_indexers)
 		fields = {
-			"entities": text_field,
+			"sentence": text_field,
 		}
 		if entities is not None and intent is not None:
 			fields["labels"] = LabelField(intent,"labels")
